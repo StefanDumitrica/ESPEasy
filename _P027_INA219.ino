@@ -124,13 +124,17 @@ boolean Plugin_027(byte function, struct EventStruct *event, String& string)
         }
         string += F("</select>");
 //        byte choice2 = Settings.TaskDevicePluginConfig[event->TaskIndex][1];
-//        String options2[2];
-//        options2[0] = F("Normal");
-//        options2[1] = F("Rotated");
-//        int optionValues2[2];
-//        optionValues2[0] = 1;
-//        optionValues2[1] = 2;
-//        string += F("<TR><TD>Rotation:<TD><select name='plugin_023_rotate'>");
+//        String options2[4];
+//        options2[0] = F("0x40");
+//        options2[1] = F("0x41 -> A0");
+//        options2[2] = F("0x44 -> A1");
+//        options2[3] = F("0x45 -> A0 & A1");
+//        int optionValues2[4];
+//        optionValues2[0] = 0x40;
+//        optionValues2[1] = 0x41;
+//        optionValues2[2] = 0x44;
+//        optionValues2[3] = 0x45;
+//        string += F("<TR><TD>Rotation:<TD><select name='plugin_026_adr'>");
 //        for (byte x = 0; x < 2; x++)
 //        {
 //          string += F("<option value='");
