@@ -8,7 +8,7 @@
 #define PLUGIN_VALUENAME1_027 "Voltage"
 
 #define INA219_ADDRESS                         (0x40)    // 1000000 (A0+A1=GND)
-//byte BH1750_ADDRESS = 0x3c; // 0x40 /0x41 A0/0x44 A1/0x45 A0 and A1
+//byte INA219_ADDRESS = 0x40; // 0x40 /0x41 A0/0x44 A1/0x45 A0 and A1
 #define INA219_READ                            (0x01)
 #define INA219_REG_CONFIG                      (0x00)
 #define INA219_CONFIG_RESET                    (0x8000)  // Reset Bit
