@@ -164,7 +164,7 @@ boolean Plugin_027(byte function, struct EventStruct *event, String& string)
 
     case PLUGIN_INIT:
       {
-        //        Plugin_027_INA219_address = Settings.TaskDevicePluginConfig[event->TaskIndex][1];
+//        Plugin_027_INA219_address = Settings.TaskDevicePluginConfig[event->TaskIndex][1];
         Plugin_027_begin();
         success = true;
         break;
