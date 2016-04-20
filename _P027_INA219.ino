@@ -7,8 +7,9 @@
 #define PLUGIN_NAME_027       "Voltage & Current (DC) - INA219"
 #define PLUGIN_VALUENAME1_027 "Voltage"
 
-//#define INA219_ADDRESS                         (0x40)    // 1000000 (A0+A1=GND)
-byte INA219_ADDRESS = 0x40; // 0x40 /0x41 A0/0x44 A1/0x45 A0 and A1
+#define INA219_ADDRESS                         (0x40)    // 1000000 (A0+A1=GND)
+uint8_t Plugin_027_INA219_address = 0x40; // 0x40 /0x41 A0/0x44 A1/0x45 A0 and A1
+boolean Plugin_027_init = false;
 #define INA219_READ                            (0x01)
 #define INA219_REG_CONFIG                      (0x00)
 #define INA219_CONFIG_RESET                    (0x8000)  // Reset Bit
@@ -58,7 +59,7 @@ byte INA219_ADDRESS = 0x40; // 0x40 /0x41 A0/0x44 A1/0x45 A0 and A1
 #define INA219_REG_CURRENT                     (0x04)
 #define INA219_REG_CALIBRATION                 (0x05)
 
-uint8_t ina219_i2caddr;
+//uint8_t Plugin_027_INA219_address;
 uint32_t ina219_calValue;
 // The following multipliers are used to convert raw current and power
 // values to mA and mW, taking into account the current config settings
@@ -128,14 +129,14 @@ boolean Plugin_027(byte function, struct EventStruct *event, String& string)
         options2[0] = F("0x40");
         options2[1] = F("0x41 -> A0");
         options2[2] = F("0x44 -> A1");
-        options2[3] = F("0x45 -> A0 & A1");
-        int optionValues2[4];
+        options2[3] = F("0x45 -> A0+A1");
+        uint8_t optionValues2[4];
         optionValues2[0] = 0x40;
         optionValues2[1] = 0x41;
         optionValues2[2] = 0x44;
         optionValues2[3] = 0x45;
-        string += F("<TR><TD>I2C Address:<TD><select name='plugin_026_adr'>");
-        for (byte x = 0; x < 2; x++)
+        string += F("<TR><TD>I2C Address:<TD><select name='plugin_027_adr'>");
+        for (byte x = 0; x < 4; x++)
         {
           string += F("<option value='");
           string += optionValues2[x];
@@ -156,14 +157,16 @@ boolean Plugin_027(byte function, struct EventStruct *event, String& string)
       {
         String plugin1 = WebServer.arg("plugin_026_value");
         Settings.TaskDevicePluginConfig[event->TaskIndex][0] = plugin1.toInt();
-      String plugin1 = WebServer.arg("plugin_026_adr");
+      String plugin2 = WebServer.arg("plugin_027_adr");
         Settings.TaskDevicePluginConfig[event->TaskIndex][1] = plugin2.toInt();
+        Plugin_027_init = false; // Force device setup next time
         success = true;
         break;
       }
 
     case PLUGIN_INIT:
       {
+        boolean Plugin_027_init = true;
         Plugin_027_INA219_address = Settings.TaskDevicePluginConfig[event->TaskIndex][1];
         Plugin_027_begin();
         success = true;
@@ -211,7 +214,7 @@ boolean Plugin_027(byte function, struct EventStruct *event, String& string)
 //**************************************************************************/
 void Plugin_027_wireWriteRegister (uint8_t reg, uint16_t value)
 {
-  Wire.beginTransmission(ina219_i2caddr);
+  Wire.beginTransmission(Plugin_027_INA219_address);
   Wire.write(reg);                       // Register
   Wire.write((value >> 8) & 0xFF);       // Upper 8-bits
   Wire.write(value & 0xFF);              // Lower 8-bits
@@ -224,13 +227,13 @@ void Plugin_027_wireWriteRegister (uint8_t reg, uint16_t value)
 void Plugin_027_wireReadRegister(uint8_t reg, uint16_t *value)
 {
 
-  Wire.beginTransmission(ina219_i2caddr);
+  Wire.beginTransmission(Plugin_027_INA219_address);
   Wire.write(reg);                       // Register
   Wire.endTransmission();
 
   delay(1); // Max 12-bit conversion time is 586us per sample
 
-  Wire.requestFrom(ina219_i2caddr, (uint8_t)2);
+  Wire.requestFrom(Plugin_027_INA219_address, (uint8_t)2);
   // Shift values to create properly formed integer
   *value = ((Wire.read() << 8) | Wire.read());
 }
@@ -308,7 +311,7 @@ void Plugin_027_setCalibration_16V_400mA(void) {
 //**************************************************************************/
 
 void Plugin_027_begin(void) {
-  ina219_i2caddr = INA219_ADDRESS;
+ // Plugin_027_INA219_address = Plugin_027_INA219_address; // INA219_ADDRESS;
   ina219_currentDivider_mA = 0;
 
   // Set chip to large range config values to start
@@ -379,4 +382,3 @@ float Plugin_027_getCurrent_mA() {
   valueDec /= ina219_currentDivider_mA;
   return valueDec;
 }
-
