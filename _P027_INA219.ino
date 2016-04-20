@@ -7,8 +7,8 @@
 #define PLUGIN_NAME_027       "Voltage & Current (DC) - INA219"
 #define PLUGIN_VALUENAME1_027 "Voltage"
 
-#define INA219_ADDRESS                         (0x40)    // 1000000 (A0+A1=GND)
-//byte INA219_ADDRESS = 0x40; // 0x40 /0x41 A0/0x44 A1/0x45 A0 and A1
+//#define INA219_ADDRESS                         (0x40)    // 1000000 (A0+A1=GND)
+byte INA219_ADDRESS = 0x40; // 0x40 /0x41 A0/0x44 A1/0x45 A0 and A1
 #define INA219_READ                            (0x01)
 #define INA219_REG_CONFIG                      (0x00)
 #define INA219_CONFIG_RESET                    (0x8000)  // Reset Bit
@@ -123,30 +123,30 @@ boolean Plugin_027(byte function, struct EventStruct *event, String& string)
           string += F("</option>");
         }
         string += F("</select>");
-//        byte choice2 = Settings.TaskDevicePluginConfig[event->TaskIndex][1];
-//        String options2[4];
-//        options2[0] = F("0x40");
-//        options2[1] = F("0x41 -> A0");
-//        options2[2] = F("0x44 -> A1");
-//        options2[3] = F("0x45 -> A0 & A1");
-//        int optionValues2[4];
-//        optionValues2[0] = 0x40;
-//        optionValues2[1] = 0x41;
-//        optionValues2[2] = 0x44;
-//        optionValues2[3] = 0x45;
-//        string += F("<TR><TD>I2C Address:<TD><select name='plugin_026_adr'>");
-//        for (byte x = 0; x < 2; x++)
-//        {
-//          string += F("<option value='");
-//          string += optionValues2[x];
-//          string += "'";
-//          if (choice2 == optionValues2[x])
-//            string += F(" selected");
-//          string += ">";
-//          string += options2[x];
-//          string += F("</option>");
-//        }
-//        string += F("</select>");
+        byte choice2 = Settings.TaskDevicePluginConfig[event->TaskIndex][1];
+        String options2[4];
+        options2[0] = F("0x40");
+        options2[1] = F("0x41 -> A0");
+        options2[2] = F("0x44 -> A1");
+        options2[3] = F("0x45 -> A0 & A1");
+        int optionValues2[4];
+        optionValues2[0] = 0x40;
+        optionValues2[1] = 0x41;
+        optionValues2[2] = 0x44;
+        optionValues2[3] = 0x45;
+        string += F("<TR><TD>I2C Address:<TD><select name='plugin_026_adr'>");
+        for (byte x = 0; x < 2; x++)
+        {
+          string += F("<option value='");
+          string += optionValues2[x];
+          string += "'";
+          if (choice2 == optionValues2[x])
+            string += F(" selected");
+          string += ">";
+          string += options2[x];
+          string += F("</option>");
+        }
+        string += F("</select>");
         
         success = true;
         break;
@@ -156,15 +156,15 @@ boolean Plugin_027(byte function, struct EventStruct *event, String& string)
       {
         String plugin1 = WebServer.arg("plugin_026_value");
         Settings.TaskDevicePluginConfig[event->TaskIndex][0] = plugin1.toInt();
-//      String plugin1 = WebServer.arg("plugin_026_adr");
-//        Settings.TaskDevicePluginConfig[event->TaskIndex][1] = plugin2.toInt();
+      String plugin1 = WebServer.arg("plugin_026_adr");
+        Settings.TaskDevicePluginConfig[event->TaskIndex][1] = plugin2.toInt();
         success = true;
         break;
       }
 
     case PLUGIN_INIT:
       {
-//        Plugin_027_INA219_address = Settings.TaskDevicePluginConfig[event->TaskIndex][1];
+        Plugin_027_INA219_address = Settings.TaskDevicePluginConfig[event->TaskIndex][1];
         Plugin_027_begin();
         success = true;
         break;
