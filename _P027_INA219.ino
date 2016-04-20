@@ -156,6 +156,8 @@ boolean Plugin_027(byte function, struct EventStruct *event, String& string)
       {
         String plugin1 = WebServer.arg("plugin_026_value");
         Settings.TaskDevicePluginConfig[event->TaskIndex][0] = plugin1.toInt();
+//      String plugin1 = WebServer.arg("plugin_026_adr");
+//        Settings.TaskDevicePluginConfig[event->TaskIndex][0] = plugin2.toInt();
         success = true;
         break;
       }
