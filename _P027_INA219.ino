@@ -7,7 +7,6 @@
 #define PLUGIN_NAME_027       "Voltage & Current (DC) - INA219"
 #define PLUGIN_VALUENAME1_027 "Voltage"
 
-#define INA219_ADDRESS                         (0x40)    // 1000000 (A0+A1=GND)
 uint8_t Plugin_027_INA219_address = 0x40; // 0x40 /0x41 A0/0x44 A1/0x45 A0 and A1
 boolean Plugin_027_init = false;
 #define INA219_READ                            (0x01)
@@ -59,7 +58,6 @@ boolean Plugin_027_init = false;
 #define INA219_REG_CURRENT                     (0x04)
 #define INA219_REG_CALIBRATION                 (0x05)
 
-//uint8_t Plugin_027_INA219_address;
 uint32_t ina219_calValue;
 // The following multipliers are used to convert raw current and power
 // values to mA and mW, taking into account the current config settings
@@ -159,14 +157,14 @@ boolean Plugin_027(byte function, struct EventStruct *event, String& string)
         Settings.TaskDevicePluginConfig[event->TaskIndex][0] = plugin1.toInt();
       String plugin2 = WebServer.arg("plugin_027_adr");
         Settings.TaskDevicePluginConfig[event->TaskIndex][1] = plugin2.toInt();
-        Plugin_027_init = false; // Force device setup next time
+        Plugin_027_init = false; // Force device setup next time??
         success = true;
         break;
       }
 
     case PLUGIN_INIT:
       {
-        boolean Plugin_027_init = true;
+        boolean Plugin_027_init = true; // Force device setup??
         Plugin_027_INA219_address = Settings.TaskDevicePluginConfig[event->TaskIndex][1];
         Plugin_027_begin();
         success = true;
