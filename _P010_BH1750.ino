@@ -8,6 +8,7 @@
 #define PLUGIN_VALUENAME1_010 "Lux"
 
 #define BH1750_ADDRESS    0x23
+//byte BH1750_ADDRESS = 0x3c; // If ADDR = LOW , The address will be 0x23;If ADDR = HIGH, The address will be 0x5C
 boolean Plugin_010_init = false;
 
 boolean Plugin_010(byte function, struct EventStruct *event, String& string)
