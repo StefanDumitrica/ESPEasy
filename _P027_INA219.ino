@@ -134,7 +134,7 @@ boolean Plugin_027(byte function, struct EventStruct *event, String& string)
 //        optionValues2[1] = 0x41;
 //        optionValues2[2] = 0x44;
 //        optionValues2[3] = 0x45;
-//        string += F("<TR><TD>Rotation:<TD><select name='plugin_026_adr'>");
+//        string += F("<TR><TD>I2C Address:<TD><select name='plugin_026_adr'>");
 //        for (byte x = 0; x < 2; x++)
 //        {
 //          string += F("<option value='");
